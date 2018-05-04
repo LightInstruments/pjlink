@@ -1,9 +1,9 @@
 # pjlink
-Go implementation of PJLink. Library only. Based on: github.com/byuoitav/pjlink-microservice
+Go implementation of PJLink. Library only. Based on: github.com/byuoitav/pjlink-microservice.  
 [![Apache 2 License](https://img.shields.io/hexpm/l/plug.svg)](https://raw.githubusercontent.com/byuoitav/pjlink-microservice/master/LICENSE)
 
 ## Setup
-// TODO: This need to be configurable per projector:
+// TODO: This need to be configurable per projector:  
 You need to set the `PJLINK_PORT` and `PJLINK_PASS` environment variables before running.
 
 ## Usage

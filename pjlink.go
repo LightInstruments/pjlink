@@ -156,9 +156,6 @@ func convertRawResponseToHumanResponse(rawResponse PJResponse,
 	return response, convertError
 }
 
-func odd(number int) bool {
-	return number%2 != 0
-}
 
 func interpretLampQueryResponse(rawLampResponse []string) []string {
 	sets := len(rawLampResponse) / 2
