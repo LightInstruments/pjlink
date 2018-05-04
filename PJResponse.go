@@ -2,7 +2,6 @@ package pjlink
 
 import (
 	"errors"
-	"log"
 	"strings"
 )
 
@@ -18,12 +17,12 @@ func NewPJResponse() *PJResponse {
 
 func (res *PJResponse) Parse(raw string) error {
 	// If password is wrong, response will be 'PJLINK ERRA'
-	if strings.Contains(raw, "ERRA") { //if authentication succeeded
+	if strings.Contains(raw, "ERRA") {
 		return errors.New("Incorrect password")
-		//example response: "%1POWR=0"
-		//returned params are class, command, and response code(s), respectively
 	}
-	log.Print(raw)
+	if len(raw) == 0 {
+		return errors.New("Empty Response")
+	}
 
 	tokens := strings.Split(raw, " ")
 

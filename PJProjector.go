@@ -6,6 +6,7 @@ import (
 	"net"
 	"strings"
 	"time"
+	"log"
 )
 
 const pjLinkPort = "4352"
@@ -110,7 +111,11 @@ func (pr *PJProjector) sendRawRequest(request PJRequest) (*PJResponse, error) {
 	scanner.Scan() //grab response line
 
 	resp := NewPJResponse()
-	resp.Parse(scanner.Text())
+	err := resp.Parse(scanner.Text())
+	if err != nil {
+		log.Println("Auth error.")
+		return resp, err
+	}
 
 	return resp, nil
 }
