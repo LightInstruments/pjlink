@@ -2,8 +2,6 @@ package pjlink
 
 import (
 	"strings"
-
-	se "github.com/byuoitav/av-api/statusevaluators"
 )
 
 func GetPowerStatus(request PJRequest) (se.PowerStatus, error) {
