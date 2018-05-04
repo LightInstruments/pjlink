@@ -2,8 +2,8 @@ package pjlink
 
 import (
 	"errors"
-	"strings"
 	"log"
+	"strings"
 )
 
 type PJResponse struct {

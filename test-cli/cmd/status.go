@@ -15,26 +15,25 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
+	"fmt"
 	"github.com/LightInstruments/pjlink"
+	"github.com/spf13/cobra"
 	"log"
 	"os"
-	"fmt"
 )
 
 // statusCmd represents the status command
 var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Display status of Projector",
-	Long: ``,
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		if projectorIp == ""{
+		if projectorIp == "" {
 			fmt.Println("projectorIp has to be specified.")
 			os.Exit(1)
 		}
 
-		proj := pjlink.NewProjector(projectorIp, "sekret")
-
+		proj := pjlink.NewProjector(projectorIp, password)
 
 		stat, err := proj.GetPowerStatus()
 		if err != nil {

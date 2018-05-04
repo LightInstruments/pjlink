@@ -25,6 +25,7 @@ import (
 
 var cfgFile string
 var projectorIp string
+var password string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -58,6 +59,7 @@ func init() {
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.test-cli.yaml)")
 	rootCmd.PersistentFlags().StringVar(&projectorIp, "projectorIp", "", "Ip of the Projector")
+	rootCmd.PersistentFlags().StringVar(&password, "password", "", "Password of the Projector")
 }
 
 // initConfig reads in config file and ENV variables if set.

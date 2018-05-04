@@ -11,9 +11,9 @@ import (
 const pjLinkPort = "4352"
 
 type Projector struct {
-	Address    string
-	Port       string
-	Password   string
+	Address  string
+	Port     string
+	Password string
 }
 
 func NewProjector(IP string, password string) *Projector {
@@ -101,16 +101,12 @@ func (pr *Projector) sendRawRequest(request PJRequest) (*PJResponse, error) {
 	scanner.Scan() //grab a line
 	challenge := strings.Split(scanner.Text(), " ")
 
-	//verify PJLink and correct class
-	if !pr.verifyPJLink(challenge) {
-		// TODO: Handle not PJLink class 1
-		return nil, errors.New("Not a PJLINK class 1 connection")
-	}
-	seed := challenge[2]
+	seed := pr.checkAuthentication(challenge)
 	stringCommand := request.toRaw(seed, pr.Password)
 
+
 	//send command
-	connection.Write([]byte(stringCommand + "\r"))
+	connection.Write([]byte(stringCommand))
 	scanner.Scan() //grab response line
 
 	resp := NewPJResponse()
@@ -124,7 +120,7 @@ func (pr *Projector) sendRawRequest(request PJRequest) (*PJResponse, error) {
 //failure: returns empty pjlinkConn and error
 func (pr *Projector) connectToPJLink() (net.Conn, error) {
 	protocol := "tcp" //PJLink always uses TCP
-	timeout := 10      //represents seconds
+	timeout := 10     //represents seconds
 
 	connection, connectionError := net.DialTimeout(protocol, net.JoinHostPort(pr.Address, pr.Port), time.Duration(timeout)*time.Second)
 	if connectionError != nil {
@@ -134,17 +130,16 @@ func (pr *Projector) connectToPJLink() (net.Conn, error) {
 	return connection, connectionError
 }
 
-//verify we receive a pjlink class 1 challenge
-//success: returns true
-//failure: returns false
-func (pr *Projector) verifyPJLink(response []string) bool {
+// check if this Projector uses authentication. If so return true and the given seed. Otherwise false and an empty string.
+func (pr *Projector) checkAuthentication(response []string) (seed string) {
 	if response[0] != "PJLINK" {
-		return false
+		return ""
+	}
+	if response[1] == "0" {
+		return ""
+	} else if response[1] == "1" {
+		return response[2]
 	}
 
-	if response[1] != "1" {
-		return false
-	}
-
-	return true
+	return ""
 }
