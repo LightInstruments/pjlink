@@ -38,37 +38,38 @@ var statusCmd = &cobra.Command{
 		stat, err := proj.GetPowerStatus()
 		if err != nil {
 			log.Println(err)
+		} else {
+			log.Println(stat)
 		}
-		log.Println(stat)
 
-		proj.TurnOn()
+
+		err = proj.TurnOn()
+		if err != nil {
+			log.Println(err)
+		}
 
 		stat, err = proj.GetPowerStatus()
 		if err != nil {
 			log.Println(err)
+		} else {
+			log.Println(stat)
 		}
-		log.Println(stat)
 
-		proj.TurnOff()
-		stat, err = proj.GetPowerStatus()
+		err = proj.TurnOff()
 		if err != nil {
 			log.Println(err)
 		}
-		log.Println(stat)
+
+		stat, err = proj.GetPowerStatus()
+		if err != nil {
+			log.Println(err)
+		} else {
+			log.Println(stat)
+		}
 
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(statusCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// statusCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// statusCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

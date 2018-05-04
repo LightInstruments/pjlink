@@ -37,3 +37,11 @@ func (res *PJResponse) Parse(raw string) error {
 
 	return nil
 }
+
+// Checks if a Command was a success
+func (res *PJResponse) Success() (bool) {
+	if res.Response[0] == "OK" {
+		return true
+	}
+	return false
+}

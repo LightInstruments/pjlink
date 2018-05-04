@@ -6,7 +6,6 @@ import (
 	"net"
 	"strings"
 	"time"
-	"log"
 )
 
 const pjLinkPort = "4352"
@@ -39,22 +38,36 @@ func (pr *PJProjector) GetPowerStatus() (*PJResponse, error) {
 	return pr.SendRequest(req)
 }
 
-func (pr *PJProjector) TurnOn() (*PJResponse, error) {
+func (pr *PJProjector) TurnOn() (error) {
 	req := PJRequest{
 		Class:     1,
 		Command:   "POWR",
 		Parameter: "1",
 	}
-	return pr.SendRequest(req)
+	resp, err := pr.SendRequest(req)
+	if err != nil {
+		return err
+	}
+	if resp.Success(){
+		return nil
+	}
+	return errors.New("Could not turn on Projector")
 }
 
-func (pr *PJProjector) TurnOff() (*PJResponse, error) {
+func (pr *PJProjector) TurnOff() (error) {
 	req := PJRequest{
 		Class:     1,
 		Command:   "POWR",
 		Parameter: "0",
 	}
-	return pr.SendRequest(req)
+	resp, err := pr.SendRequest(req)
+	if err != nil {
+		return err
+	}
+	if resp.Success(){
+		return nil
+	}
+	return errors.New("Could not turn off Projector")
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -113,7 +126,6 @@ func (pr *PJProjector) sendRawRequest(request PJRequest) (*PJResponse, error) {
 	resp := NewPJResponse()
 	err := resp.Parse(scanner.Text())
 	if err != nil {
-		log.Println("Auth error.")
 		return resp, err
 	}
 
