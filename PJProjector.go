@@ -70,6 +70,60 @@ func (pr *PJProjector) TurnOff() (error) {
 	return errors.New("Could not turn off Projector")
 }
 
+func (self *PJProjector) GetProperty(property string) (string, error) {
+	var request PJRequest
+
+	request.Class = 1
+	request.Command = property
+	request.Parameter = "?"
+
+	resp, err := self.SendRequest(request)
+
+	if err != nil {
+		return "", err
+	}
+
+	/*	log.Printf("response size for %s: %d\n", property, len(resp.Response))
+		for i := 0; i < len(resp.Response); i++ {
+			log.Printf("response %d: %s\n", i, resp.Response[i])
+		} */
+
+	return resp.Response[0], nil
+}
+
+func (self *PJProjector) GetPropertyArray(property string) ([]string, error) {
+	var request PJRequest
+
+	request.Class = 1
+	request.Command = property
+	request.Parameter = "?"
+
+	resp, err := self.SendRequest(request)
+
+	if err != nil {
+		return make([]string, 0), err
+	}
+
+	/*	log.Printf("response size for %s: %d\n", property, len(resp.Response))
+		for i := 0; i < len(resp.Response); i++ {
+			log.Printf("response %d: %s\n", i, resp.Response[i])
+		} */
+
+	return resp.Response, nil
+}
+
+func (self *PJProjector) SetProperty(property string, val string) error {
+	var request PJRequest
+
+	request.Class = 1
+	request.Command = property
+	request.Parameter = val
+
+	_, err := self.SendRequest(request)
+
+	return err
+}
+
 //--------------------------------------------------------------------------------------------------------------------//
 // Low-Level Calls
 //--------------------------------------------------------------------------------------------------------------------//
